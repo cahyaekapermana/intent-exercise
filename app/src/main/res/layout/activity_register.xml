@@ -185,6 +185,7 @@
         android:background="@drawable/btn_red_large"
         android:text="@android:string/ok"
         android:textColor="@android:color/white"
+        android:onClick="handleOk"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

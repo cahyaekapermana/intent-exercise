@@ -60,6 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
             aboutInput.setError( "required!" );
         }
 
+//        Kondisi cek password jika tidak sesuai diberi equals
+
+        if ( ! passwordInput.getText().toString().equals( confInput.getText().toString() ) ){
+
+            confInput.setError( "Password pertama anda = " + passwordInput.getText().toString() + " sementara password konfirm anda = " + confInput.getText().toString() + "sesuaikan inputan anda. makasih." );
+
+        }
+
         else{
 
             String fullname = fullnameInput.getText().toString();
