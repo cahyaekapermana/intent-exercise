@@ -4,9 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //Deklarasi attribut di sandingkan dengan id di text main
         fullnameInput = findViewById(R.id.text_fullname);
         emailInput = findViewById(R.id.text_email);
         passwordInput = findViewById(R.id.text_password);
@@ -39,45 +41,44 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void handleOk(View view) {
+    public void handleOk(View view ) {
 
-        if( passwordInput.getText().toString().isEmpty()){
-            passwordInput.setError( "required!" );
-        }
-        if( confInput.getText().toString().isEmpty()){
-            confInput.setError( "required!" );
-        }
-        if( fullnameInput.getText().toString().isEmpty()){
+        String fullname = fullnameInput.getText().toString();
+        String email = emailInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String conf = confInput.getText().toString();
+        String homepage = homepageInput.getText().toString();
+        String about = aboutInput.getText().toString();
+
+        Intent intent = new Intent(this, ProfileActivity.class);
+
+        if( fullname.isEmpty()){
             fullnameInput.setError( "required!" );
         }
-        if( emailInput.getText().toString().isEmpty()){
+
+        if( email.isEmpty()){
             emailInput.setError( "required!" );
         }
-        if( homepageInput.getText().toString().isEmpty()){
+
+        if( password.isEmpty()){
+            passwordInput.setError( "required!" );
+        }
+
+        if( !conf.equals(password)){
+            confInput.setError( "password yang anda masukan" + password +"sementara isi confirm pssword anda" + conf );
+        }
+
+        if( homepage.isEmpty()){
             homepageInput.setError( "required!" );
         }
-        if( aboutInput.getText().toString().isEmpty()){
+
+        if( about.isEmpty()){
             aboutInput.setError( "required!" );
         }
 
-//        Kondisi cek password jika tidak sesuai diberi equals
+        // Kondisi cek password jika tidak sesuai diberi equals (by cahya eka ganteng)
 
-        if ( ! passwordInput.getText().toString().equals( confInput.getText().toString() ) ){
-
-            confInput.setError( "Password pertama anda = " + passwordInput.getText().toString() + " sementara password konfirm anda = " + confInput.getText().toString() + "sesuaikan inputan anda. makasih." );
-
-        }
-
-        else{
-
-            String fullname = fullnameInput.getText().toString();
-            String email = emailInput.getText().toString();
-            String password = passwordInput.getText().toString();
-            String conf = confInput.getText().toString();
-            String homepage = homepageInput.getText().toString();
-            String about = aboutInput.getText().toString();
-
-            Intent intent = new Intent(this, ProfileActivity.class);
+        else {
 
             intent.putExtra(FULLNAME_KEY, fullname);
             intent.putExtra(EMAIL_KEY, email);
@@ -87,7 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
             intent.putExtra(ABOUT_KEY, about);
 
             startActivity(intent);
-
         }
 
     }
