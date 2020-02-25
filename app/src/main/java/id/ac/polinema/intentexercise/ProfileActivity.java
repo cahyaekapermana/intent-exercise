@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -12,6 +13,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView emailText;
     private TextView homepageText;
     private TextView aboutText;
+    private ImageView imageProfile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

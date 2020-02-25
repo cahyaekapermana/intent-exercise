@@ -1,12 +1,21 @@
 package id.ac.polinema.intentexercise;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -17,7 +26,12 @@ public class RegisterActivity extends AppCompatActivity {
     public static final String CONF_KEY = "conf";
     public static final String HOMEPAGE_KEY = "homepage";
     public static final String ABOUT_KEY = "about";
+    //Load Image Attribut
+    private static final String TAG = RegisterActivity.class.getCanonicalName();
+    private static final int GALLERY_REQUEST_CODE = 1;
 
+
+    private ImageView imageProfile;
     private EditText fullnameInput;
     private EditText emailInput;
     private EditText passwordInput;
@@ -38,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         confInput = findViewById(R.id.text_confirm_password);
         homepageInput = findViewById(R.id.text_homepage);
         aboutInput = findViewById(R.id.text_about);
+        imageProfile = findViewById(R.id.image_profile);
 
     }
 
@@ -56,27 +71,25 @@ public class RegisterActivity extends AppCompatActivity {
             fullnameInput.setError( "required!" );
         }
 
-        if( email.isEmpty()){
+        else if( email.isEmpty()){
             emailInput.setError( "required!" );
         }
 
-        if( password.isEmpty()){
+        else if( password.isEmpty()){
             passwordInput.setError( "required!" );
         }
-
-        if( !conf.equals(password)){
-            confInput.setError( "password yang anda masukan" + password +"sementara isi confirm pssword anda" + conf );
+        // Kondisi cek password jika tidak sesuai diberi equals (by cahya eka ganteng)
+        else if( !conf.equals(password)){
+            confInput.setError( "password yang anda masukan " + password +" sementara isi confirm pssword anda " + conf );
         }
 
-        if( homepage.isEmpty()){
+        else if( homepage.isEmpty()){
             homepageInput.setError( "required!" );
         }
 
-        if( about.isEmpty()){
+        else if( about.isEmpty()){
             aboutInput.setError( "required!" );
         }
-
-        // Kondisi cek password jika tidak sesuai diberi equals (by cahya eka ganteng)
 
         else {
 
@@ -92,4 +105,33 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+
+        if (requestCode == GALLERY_REQUEST_CODE) {
+            if (data != null) {
+                try {
+                    Uri imageUri = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    imageProfile.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    Toast.makeText(this, "Can't load image", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        }
+    }
+
+
+    public void handleImageProfile(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+
+    }
 }
